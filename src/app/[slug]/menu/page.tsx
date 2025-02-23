@@ -40,7 +40,7 @@ const RestaurantMenuPage = async ({
       <RestaurantCategories restaurant={restaurant} />
     </div>
   );
-}; 
+};
 
 export default RestaurantMenuPage;
 

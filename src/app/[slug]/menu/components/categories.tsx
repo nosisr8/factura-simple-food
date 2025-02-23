@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Prisma } from "@prisma/client";
@@ -12,7 +13,7 @@ import Products from "./products";
 
 interface RestaurantCategoriesProps {
   restaurant: Prisma.RestaurantGetPayload<{
-    include: { 
+    include: {
       menuCategories: {
         include: { products: true };
       };

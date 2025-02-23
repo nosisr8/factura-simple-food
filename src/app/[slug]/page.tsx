@@ -26,7 +26,7 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
           height={82}
         />
         <h2 className="font-semibold">{restaurant.name}</h2>
-      </div> 
+      </div>
       {/* BEM VINDO */}
       <div className="space-y-2 pt-24 text-center">
         <h3 className="text-2xl font-semibold">Seja bem-vindo!</h3>
@@ -38,7 +38,7 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
       <div className="grid grid-cols-2 gap-4 pt-14">
         <ConsumptionMethodOption
           slug={slug}
-          option="DINE_IN" 
+          option="DINE_IN"
           buttonText="Para comer aqui"
           imageAlt="Comer aqui"
           imageUrl="/dine_in.png"
