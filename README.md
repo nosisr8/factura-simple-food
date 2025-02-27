@@ -4,6 +4,8 @@
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+To access the website, simply access this link in your browser: https://fullstackweek-donalds-eight.vercel.app/fsw-donalds
+
 ## Getting Started
 
 First, run the development server:
