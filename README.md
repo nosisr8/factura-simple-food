@@ -44,11 +44,11 @@ Git para clonar o repositório
 
 ## Clone o repositório
 
-`git clone https://github.com/seu-usuario/fullstackweek-donalds.git´
+`git clone https://github.com/seu-usuario/fullstackweek-donalds.git`
 
 Acesse o diretório do projeto
 
-`cd fullstackweek-donalds´
+`cd fullstackweek-donalds`
 
 Instale as dependências:
 
@@ -69,7 +69,7 @@ yarn dev
 Acesse no navegador
 Abra seu navegador e digite:
 
-`http://localhost:3000´
+`http://localhost:3000`
 
 # 💡 Como Contribuir
 
@@ -79,15 +79,15 @@ Faça um fork do repositório
 
 Crie uma branch para sua feature:
 
-`git checkout -b minha-nova-feature´
+`git checkout -b minha-nova-feature`
 
 Realize suas alterações e faça commits
 
-`git commit -m "Adiciona nova feature X"´
+`git commit -m "Adiciona nova feature X"`
 
 Envie suas alterações para o GitHub
 
-`git push origin minha-nova-feature´
+`git push origin minha-nova-feature`
 
 ## Abra um Pull Request e descreva as melhorias que você fez
 
