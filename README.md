@@ -42,7 +42,7 @@ Git para clonar o repositório
 
 # 📌 Passos para Instalação
 
-Clone o repositório
+## Clone o repositório
 
 `git clone https://github.com/seu-usuario/fullstackweek-donalds.git´
 
@@ -91,7 +91,7 @@ Envie suas alterações para o GitHub
 
 ## Abra um Pull Request e descreva as melhorias que você fez
 
-💳 Fluxo de Funcionamento
+# 💳 Fluxo de Funcionamento
 
 1 - O usuário acessa o site e visualiza o cardápio de produtos
 
@@ -101,7 +101,7 @@ Envie suas alterações para o GitHub
 
 4 - O pedido é processado e enviado para preparação
 
-🌟 Diferenciais
+# 🌟 Diferenciais
 
 • Interface moderna e responsiva para melhor experiência do usuário
 
