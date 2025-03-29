@@ -20,7 +20,9 @@ TypeScript - Tipagem estática para maior segurança e produtividade
 
 TailwindCSS - Estilização otimizada com classes utilitárias
 
-Bootstrap - Framework CSS para construção de layouts responsivos e acessíveis
+Shadcn - Biblioteca de componentes personalizados para estilização
+
+Prisma - ORM para gerenciamento de banco de dados
 
 Stripe - Integração para processamento de pagamentos online
 
@@ -34,7 +36,7 @@ Node.js - Backend para lidar com requisições e processamentos do servidor
 
 Antes de começar, certifique-se de ter instalado em sua máquina:
 
-Node.js (versão recomendada: 16+)
+Node.js instalado (versão 14 ou superior)
 
 NPM ou Yarn para gerenciar pacotes
 
