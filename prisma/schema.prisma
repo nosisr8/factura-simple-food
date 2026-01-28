@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://postgres:p6Hte8wmaB4cHE4F@factura-simple-db-core.clissagukvm1.sa-east-1.rds.amazonaws.com:5432/factura_simple_food?schema=public"
 }
 
 model Restaurant {
