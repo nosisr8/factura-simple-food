@@ -3,7 +3,8 @@ frontend:
   phases:
     preBuild:
       commands:
-        - curl -f https://get.pnpm.io/v6.16.js | node - add --global pnpm
+        - corepack enable
+        - corepack prepare pnpm@latest --activate
         - pnpm install --no-frozen-lockfile
     build:
       commands:
