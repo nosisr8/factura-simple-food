@@ -7,14 +7,18 @@ import Stripe from "stripe";
 import { db } from "@/lib/prisma";
 
 import { CartProduct } from "../contexts/cart";
-import { removeCpfPunctuation } from "../helpers/cpf";
+import {
+  CustomerDocumentType,
+  normalizeDocument,
+} from "../helpers/document";
 
 interface CreateStripeCheckoutInput {
   products: CartProduct[];
   orderId: number;
   slug: string;
   consumptionMethod: ConsumptionMethod;
-  cpf: string;
+  document: string;
+  documentType: CustomerDocumentType;
 }
 
 export const createStripeCheckout = async ({
@@ -22,7 +26,8 @@ export const createStripeCheckout = async ({
   products,
   slug,
   consumptionMethod,
-  cpf,
+  document,
+  documentType,
 }: CreateStripeCheckoutInput) => {
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("Missing Stripe secret key");
@@ -40,7 +45,8 @@ export const createStripeCheckout = async ({
   });
   const searchParams = new URLSearchParams();
   searchParams.set("consumptionMethod", consumptionMethod);
-  searchParams.set("cpf", removeCpfPunctuation(cpf));
+  searchParams.set("documentType", documentType);
+  searchParams.set("document", normalizeDocument(document));
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
     mode: "payment",
@@ -51,13 +57,15 @@ export const createStripeCheckout = async ({
     },
     line_items: products.map((product) => ({
       price_data: {
-        currency: "brl",
+        // Paraguay: Guaraní (cero decimales en Stripe)
+        currency: "pyg",
         product_data: {
           name: product.name,
           images: [product.imageUrl],
         },
-        unit_amount:
-          productsWithPrices.find((p) => p.id === product.id)!.price * 100,
+        unit_amount: Math.round(
+          productsWithPrices.find((p) => p.id === product.id)!.price,
+        ),
       },
       quantity: product.quantity,
     })),

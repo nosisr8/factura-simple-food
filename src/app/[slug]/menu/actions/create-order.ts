@@ -1,15 +1,18 @@
 "use server";
 
-import { ConsumptionMethod } from "@prisma/client";
+import { ConsumptionMethod, CustomerDocumentType } from "@prisma/client";
+import crypto from "crypto";
 import { revalidatePath } from "next/cache";
 
 import { db } from "@/lib/prisma";
 
-import { removeCpfPunctuation } from "../helpers/cpf";
+import { normalizeDocument } from "../helpers/document";
 
 interface CreateOrderInput {
   customerName: string;
-  customerCpf: string;
+  customerDocument: string;
+  documentType: CustomerDocumentType;
+  tableNumber?: number | null;
   products: Array<{
     id: string;
     quantity: number;
@@ -43,7 +46,10 @@ export const createOrder = async (input: CreateOrderInput) => {
     data: {
       status: "PENDING",
       customerName: input.customerName,
-      customerCpf: removeCpfPunctuation(input.customerCpf),
+      customerDocument: normalizeDocument(input.customerDocument),
+      documentType: input.documentType,
+      tableNumber: input.tableNumber ?? null,
+      confirmationToken: crypto.randomUUID(),
       orderProducts: {
         createMany: {
           data: productsWithPricesAndQuantities,
@@ -59,7 +65,7 @@ export const createOrder = async (input: CreateOrderInput) => {
   });
   revalidatePath(`/${input.slug}/orders`);
   // redirect(
-  //   `/${input.slug}/orders?cpf=${removeCpfPunctuation(input.customerCpf)}`,
+  //   `/${input.slug}/orders?documentType=${input.documentType}&document=${normalizeDocument(input.customerDocument)}`,
   // );
   return order;
 };

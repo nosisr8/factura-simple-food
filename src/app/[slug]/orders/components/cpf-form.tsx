@@ -25,31 +25,60 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useCheckoutFormStore } from "@/stores/checkout-form";
 
-import { isValidCpf, removeCpfPunctuation } from "../../menu/helpers/cpf";
+import {
+  CustomerDocumentType,
+  isValidDocument,
+  normalizeDocument,
+} from "../../menu/helpers/document";
 
 const formSchema = z.object({
-  cpf: z
+  documentType: z.enum(["CI", "RUC"]),
+  document: z
     .string()
     .trim()
     .min(1, {
-      message: "O CPF é obrigatório.",
+      message: "El documento es obligatorio.",
     })
-    .refine((value) => isValidCpf(value), {
-      message: "CPF inválido.",
+    .refine((value) => normalizeDocument(value).length > 0, {
+      message: "El documento es obligatorio.",
     }),
+});
+
+const validatedFormSchema = formSchema.superRefine((data, ctx) => {
+  if (!isValidDocument(data.documentType, data.document)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["document"],
+      message: data.documentType === "CI" ? "CI inválida." : "RUC inválido.",
+    });
+  }
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 const CpfForm = () => {
+  const {
+    documentType: persistedDocumentType,
+    document: persistedDocument,
+    setDocumentType,
+    setDocument,
+  } = useCheckoutFormStore();
+
   const form = useForm<FormSchema>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(validatedFormSchema),
+    defaultValues: {
+      documentType: (persistedDocumentType ?? "CI") as "CI" | "RUC",
+      document: persistedDocument ?? "",
+    },
   });
   const router = useRouter();
   const pathname = usePathname();
   const onSubmit = (data: FormSchema) => {
-    router.replace(`${pathname}?cpf=${removeCpfPunctuation(data.cpf)}`);
+    const documentType = data.documentType as CustomerDocumentType;
+    const document = normalizeDocument(data.document);
+    router.replace(`${pathname}?documentType=${documentType}&document=${document}`);
   };
   const handleCancel = () => {
     router.back();
@@ -58,9 +87,9 @@ const CpfForm = () => {
     <Drawer open>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle>Visualizar Pedidos</DrawerTitle>
+          <DrawerTitle>Ver pedidos</DrawerTitle>
           <DrawerDescription>
-            Insira seu CPF abaixo para visualizar seus pedidos.
+            Elegí CI o RUC e ingresá tu documento para ver tus pedidos.
           </DrawerDescription>
         </DrawerHeader>
 
@@ -68,16 +97,53 @@ const CpfForm = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={form.control}
-              name="cpf"
+              name="documentType"
               render={({ field }) => (
                 <FormItem className="px-4">
-                  <FormLabel>Seu CPF</FormLabel>
+                  <FormLabel>Tipo de documento</FormLabel>
+                  <FormControl>
+                    <select
+                      className="h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setDocumentType(e.target.value as "CI" | "RUC");
+                      }}
+                    >
+                      <option value="CI">CI</option>
+                      <option value="RUC">RUC</option>
+                    </select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="document"
+              render={({ field }) => (
+                <FormItem className="px-4">
+                  <FormLabel>
+                    {form.watch("documentType") === "CI" ? "Tu CI" : "Tu RUC"}
+                  </FormLabel>
                   <FormControl>
                     <PatternFormat
-                      placeholder="Digite seu CPF..."
-                      format="###.###.###-##"
+                      placeholder={
+                        form.watch("documentType") === "CI"
+                          ? "Escribí tu CI..."
+                          : "Escribí tu RUC..."
+                      }
+                      format={
+                        form.watch("documentType") === "CI"
+                          ? "##########"
+                          : "##########-#"
+                      }
                       customInput={Input}
                       {...field}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setDocument((e.target as HTMLInputElement).value);
+                      }}
                     />
                   </FormControl>
                   <FormMessage />

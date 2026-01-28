@@ -14,7 +14,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: "FSW Donalds",
-  description: "Bora finalizar esse projeto lindo!",
+  description: "¡Vamos a terminar este proyecto!",
 };
 
 export default function RootLayout({
@@ -23,11 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="es-PY">
       <body className={`${poppins.className} antialiased`}>
         <CartProvider>{children}</CartProvider>
 
-        <Toaster/>
+        <Toaster />
       </body>
     </html>
   );

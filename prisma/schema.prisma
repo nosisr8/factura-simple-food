@@ -20,6 +20,7 @@ model Restaurant {
   description    String
   avatarImageUrl String
   coverImageUrl  String
+  whatsappNumber String?
   menuCategories MenuCategory[]
   products       Product[]
   orders         Order[]
@@ -62,7 +63,11 @@ model Order {
   restaurantId      String
   orderProducts     OrderProduct[]
   customerName      String
-  customerCpf       String
+  customerDocument  String
+  documentType      CustomerDocumentType
+  tableNumber       Int?
+  confirmationToken String?           @unique
+  confirmedAt       DateTime?
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt
 }
@@ -90,4 +95,9 @@ enum OrderStatus {
 enum ConsumptionMethod {
   TAKEAWAY
   DINE_IN
+}
+
+enum CustomerDocumentType {
+  CI
+  RUC
 }

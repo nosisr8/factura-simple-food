@@ -1,27 +1,29 @@
 import { db } from "@/lib/prisma";
 
-import { isValidCpf, removeCpfPunctuation } from "../menu/helpers/cpf";
+import { CustomerDocumentType, isValidDocument, normalizeDocument } from "../menu/helpers/document";
 import CpfForm from "./components/cpf-form";
 import OrderList from "./components/order-list";
 
 interface OrdersPageProps {
-  searchParams: Promise<{ cpf: string }>;
+  searchParams: Promise<{ document?: string; documentType?: CustomerDocumentType }>;
 }
 
 const OrdersPage = async ({ searchParams }: OrdersPageProps) => {
-  const { cpf } = await searchParams;
-  if (!cpf) {
+  const { document, documentType } = await searchParams;
+  if (!document || !documentType) {
     return <CpfForm />;
   }
-  if (!isValidCpf(cpf)) {
+  if (!isValidDocument(documentType, document)) {
     return <CpfForm />;
   }
+  const normalizedDocument = normalizeDocument(document);
   const orders = await db.order.findMany({
     orderBy: {
       createdAt: "desc",
     },
     where: {
-      customerCpf: removeCpfPunctuation(cpf),
+      customerDocument: normalizedDocument,
+      documentType,
     },
     include: {
       restaurant: {

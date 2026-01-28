@@ -1,3 +1,4 @@
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -17,11 +18,22 @@ import FinishOrderDialog from "./finish-order-dialog";
 const CartSheet = () => {
   const [finishOrderDialogIsOpen, setFinishOrderDialogIsOpen] = useState(false);
   const { isOpen, toggleCart, products, total } = useContext(CartContext);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { slug } = useParams<{ slug: string }>();
+
+  const handleContinueShopping = () => {
+    const consumptionMethod = searchParams.get("consumptionMethod");
+    toggleCart(); // cierra el carrito
+    router.push(
+      `/${slug}/menu${consumptionMethod ? `?consumptionMethod=${consumptionMethod}` : ""}`,
+    );
+  };
   return (
     <Sheet open={isOpen} onOpenChange={toggleCart}>
       <SheetContent className="w-[80%]">
         <SheetHeader>
-          <SheetTitle className="text-left">Sacola</SheetTitle>
+          <SheetTitle className="text-left">Carrito</SheetTitle>
         </SheetHeader>
         <div className="flex h-full flex-col py-5">
           <div className="flex-auto">
@@ -38,6 +50,13 @@ const CartSheet = () => {
             </CardContent>
           </Card>
           <Button
+            variant="outline"
+            className="mb-2 w-full rounded-full"
+            onClick={handleContinueShopping}
+          >
+            Continuar comprando
+          </Button>
+          <Button
             className="w-full rounded-full"
             onClick={() => setFinishOrderDialogIsOpen(true)}
           >
@@ -48,9 +67,9 @@ const CartSheet = () => {
             onOpenChange={setFinishOrderDialogIsOpen}
           />
         </div>
-        </SheetContent>
+      </SheetContent>
     </Sheet>
-   );
-  };
-  
-  export default CartSheet;
+  );
+};
+
+export default CartSheet;
