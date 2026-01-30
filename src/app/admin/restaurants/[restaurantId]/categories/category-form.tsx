@@ -51,6 +51,17 @@ export function CategoryForm(props: {
             <Input id="name" name="name" defaultValue={initial?.name ?? ""} required />
             {fe["name"] ? <p className="text-xs text-destructive">{fe["name"]}</p> : null}
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="order">Orden</Label>
+            <Input
+              id="order"
+              name="order"
+              type="number"
+              defaultValue={initial?.order ?? 0}
+            />
+            {fe["order"] ? <p className="text-xs text-destructive">{fe["order"]}</p> : null}
+          </div>
         </CardContent>
         <CardFooter className="flex justify-end">
           <Button type="submit" disabled={pending}>

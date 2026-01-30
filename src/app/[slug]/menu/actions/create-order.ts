@@ -30,6 +30,9 @@ export const createOrder = async (input: CreateOrderInput) => {
   if (!restaurant) {
     throw new Error("Restaurant not found");
   }
+  if (restaurant.catalogOnly) {
+    throw new Error("Orders are disabled for this restaurant (catalog only)");
+  }
   const productsWithPrices = await db.product.findMany({
     where: {
       id: {

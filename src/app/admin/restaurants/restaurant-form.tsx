@@ -99,6 +99,22 @@ export function RestaurantForm(props: {
             ) : null}
           </div>
 
+          <div className="space-y-2">
+            <Label>Modo</Label>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                type="checkbox"
+                name="catalogOnly"
+                defaultChecked={initial?.catalogOnly ?? false}
+                className="h-4 w-4 rounded border border-input"
+              />
+              Solo catálogo (no mostrar carrito/pedidos)
+            </label>
+            {fe["catalogOnly"] ? (
+              <p className="text-xs text-destructive">{fe["catalogOnly"]}</p>
+            ) : null}
+          </div>
+
           <input type="hidden" name="avatarImageUrl" value={avatarImageUrl} />
           <input type="hidden" name="coverImageUrl" value={coverImageUrl} />
 

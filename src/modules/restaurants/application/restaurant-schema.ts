@@ -12,6 +12,7 @@ export const createRestaurantSchema = z.object({
   description: z.string().trim().min(1, "La descripción es requerida."),
   avatarImageUrl: z.string().trim().url("El avatar debe ser una URL válida."),
   coverImageUrl: z.string().trim().url("El cover debe ser una URL válida."),
+  catalogOnly: z.boolean().optional().default(false),
   whatsappNumber: z.string().trim().optional().nullable(),
 });
 

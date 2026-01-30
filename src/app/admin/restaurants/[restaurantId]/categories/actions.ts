@@ -28,6 +28,7 @@ export async function createCategoryAction(
     const payload = {
       restaurantId,
       name: String(formData.get("name") ?? ""),
+      order: String(formData.get("order") ?? ""),
     };
     await createCategory(payload);
   } catch (e) {
@@ -49,6 +50,7 @@ export async function updateCategoryAction(
   try {
     const payload = {
       name: String(formData.get("name") ?? ""),
+      order: String(formData.get("order") ?? ""),
     };
     await updateCategory(categoryId, payload);
   } catch (e) {
@@ -63,6 +65,15 @@ export async function updateCategoryAction(
 
 export async function deleteCategoryAction(restaurantId: string, categoryId: string) {
   await deleteCategory(categoryId);
+  redirect(`/admin/restaurants/${restaurantId}/categories`);
+}
+
+export async function setCategoryOrderAction(
+  restaurantId: string,
+  categoryId: string,
+  formData: FormData
+) {
+  await updateCategory(categoryId, { order: String(formData.get("order") ?? "") });
   redirect(`/admin/restaurants/${restaurantId}/categories`);
 }
 

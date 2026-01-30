@@ -7,7 +7,7 @@ import RestaurantHeader from "./components/header";
 
 interface RestaurantMenuPageProps {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ consumptionMethod: string }>;
+  searchParams: Promise<{ consumptionMethod?: string }>;
 }
 
 const isConsumptionMethodValid = (consumptionMethod: string) => {
@@ -20,19 +20,24 @@ const RestaurantMenuPage = async ({
 }: RestaurantMenuPageProps) => {
   const { slug } = await params;
   const { consumptionMethod } = await searchParams;
-  if (!isConsumptionMethodValid(consumptionMethod)) {
-    return notFound();
-  }
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
     include: {
       menuCategories: {
+        orderBy: { order: "asc" },
         include: { products: true },
       },
     },
   });
   if (!restaurant) {
     return notFound();
+  }
+
+  // Si el restaurante NO es solo catálogo, requiere método de consumo válido.
+  if (!restaurant.catalogOnly) {
+    if (!consumptionMethod || !isConsumptionMethodValid(consumptionMethod)) {
+      return notFound();
+    }
   }
   return (
     <div>

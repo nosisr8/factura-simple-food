@@ -55,6 +55,7 @@ const principal = async () => {
         name: "TÍO'S food garden ",
         slug: "tios-food-garden",
         description: "La mejor comida rápida del mundo",
+        catalogOnly: false,
         whatsappNumber: "595982128110",
         avatarImageUrl:
           "https://scontent.fagt6-1.fna.fbcdn.net/v/t39.30808-6/324559270_1409422096263423_4128711233343453726_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=p2GgDNYQGGcQ7kNvwEfxIAA&_nc_oc=Adm-AbCTOIc08SLeENTOMnYaRoR9UCOf7NZ0NufA5eTTQ1xtjx4FVtWaerArZLehk5s&_nc_zt=23&_nc_ht=scontent.fagt6-1.fna&_nc_gid=XDZH946rqXBxqxtj_stWAQ&oh=00_AfpBaxVSMsn5W1-g09X9RlsOY5JGCoFFx22Irhrm_6UYRA&oe=697E9C0C",

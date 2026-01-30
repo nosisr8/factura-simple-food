@@ -19,6 +19,7 @@ interface ProductDetailsProps {
         select: {
           name: true;
           avatarImageUrl: true;
+          catalogOnly: true;
         };
       };
     };
@@ -28,6 +29,7 @@ interface ProductDetailsProps {
 const ProductDetails = ({ product }: ProductDetailsProps) => {
   const { toggleCart, addProduct } = useContext(CartContext);
   const [quantity, setQuantity] = useState<number>(1);
+  const orderingEnabled = !product.restaurant.catalogOnly;
   const handleDecreaseQuantity = () => {
     setQuantity((prev) => {
       if (prev === 1) {
@@ -72,23 +74,25 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
             <h3 className="text-xl font-semibold">
               {formatCurrency(product.price)}
             </h3>
-            <div className="flex items-center gap-3 text-center">
-              <Button
-                variant="outline"
-                className="h-8 w-8 rounded-xl"
-                onClick={handleDecreaseQuantity}
-              >
-                <ChevronLeftIcon />
-              </Button>
-              <p className="w-4">{quantity}</p>
-              <Button
-                variant="destructive"
-                className="h-8 w-8 rounded-xl"
-                onClick={handleIncreaseQuantity}
-              >
-                <ChevronRightIcon />
-              </Button>
-            </div>
+            {orderingEnabled ? (
+              <div className="flex items-center gap-3 text-center">
+                <Button
+                  variant="outline"
+                  className="h-8 w-8 rounded-xl"
+                  onClick={handleDecreaseQuantity}
+                >
+                  <ChevronLeftIcon />
+                </Button>
+                <p className="w-4">{quantity}</p>
+                <Button
+                  variant="destructive"
+                  className="h-8 w-8 rounded-xl"
+                  onClick={handleIncreaseQuantity}
+                >
+                  <ChevronRightIcon />
+                </Button>
+              </div>
+            ) : null}
           </div>
 
           <ScrollArea className="h-full">
@@ -115,11 +119,13 @@ const ProductDetails = ({ product }: ProductDetailsProps) => {
           </ScrollArea>
         </div>
 
-        <Button className="w-full rounded-full" onClick={handleAddToCart}>
-          Agregar al carrito
-        </Button>
+        {orderingEnabled ? (
+          <Button className="w-full rounded-full" onClick={handleAddToCart}>
+            Agregar al carrito
+          </Button>
+        ) : null}
       </div>
-      <CartSheet />
+      {orderingEnabled ? <CartSheet /> : null}
     </>
   );
 };

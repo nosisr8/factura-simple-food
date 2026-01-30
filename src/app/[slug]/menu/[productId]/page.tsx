@@ -18,6 +18,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
         select: {
           name: true,
           avatarImageUrl: true,
+          catalogOnly: true,
           slug: true,
         },
       },
@@ -31,7 +32,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
   }
   return (
     <div className="flex h-full flex-col">
-      <ProductHeader product={product} />
+      <ProductHeader product={product} catalogOnly={product.restaurant.catalogOnly} />
       <ProductDetails product={product} />
     </div>
   );

@@ -8,7 +8,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 interface RestaurantHeaderProps {
-  restaurant: Pick<Restaurant, "name" | "coverImageUrl">;
+  restaurant: Pick<Restaurant, "name" | "coverImageUrl" | "catalogOnly">;
 }
 
 const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
@@ -17,11 +17,11 @@ const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
   const handleBackClick = () => router.back();
   const handleOrdersClick = () => router.push(`/${slug}/orders`);
   return (
-    <div className="relative h-[250px] w-full">
+    <div className="relative h-[280px] w-full overflow-hidden">
       <Button
         variant="secondary"
         size="icon"
-        className="absolute left-4 top-4 z-50 rounded-full"
+        className="absolute left-4 top-4 z-50 rounded-full bg-white/80 backdrop-blur hover:bg-white"
         onClick={handleBackClick}
       >
         <ChevronLeftIcon />
@@ -32,14 +32,24 @@ const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
         fill
         className="object-cover"
       />
-      <Button
-        variant="secondary"
-        size="icon"
-        className="absolute right-4 top-4 z-50 rounded-full"
-        onClick={handleOrdersClick}
-      >
-        <ScrollTextIcon />
-      </Button>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-background" />
+      {!restaurant.catalogOnly ? (
+        <Button
+          variant="secondary"
+          size="icon"
+          className="absolute right-4 top-4 z-50 rounded-full bg-white/80 backdrop-blur hover:bg-white"
+          onClick={handleOrdersClick}
+        >
+          <ScrollTextIcon />
+        </Button>
+      ) : null}
+
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+        <h1 className="text-xl font-semibold text-white drop-shadow-sm">{restaurant.name}</h1>
+        <p className="mt-0.5 text-sm text-white/80">
+          {restaurant.catalogOnly ? "Catálogo" : "Menú & pedidos"}
+        </p>
+      </div>
     </div>
   );
 };

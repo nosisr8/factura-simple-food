@@ -4,10 +4,12 @@ import { AdminSearch } from "@/components/molecules/admin-search";
 import { PageHeader } from "@/components/organisms/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { listCategoriesByRestaurant } from "@/modules/categories/application/list-categories-by-restaurant";
 import { getRestaurantById } from "@/modules/restaurants/application/get-restaurant-by-id";
 
-import { deleteCategoryAction } from "./actions";
+import { deleteCategoryAction, setCategoryOrderAction } from "./actions";
 
 export default async function CategoriesPage(props: {
   params: Promise<{ restaurantId: string }>;
@@ -61,8 +63,32 @@ export default async function CategoriesPage(props: {
         {categories.map((c) => (
           <Card key={c.id}>
             <CardContent className="flex items-center justify-between gap-3 p-4">
-              <p className="font-medium">{c.name}</p>
+              <div>
+                <p className="font-medium">{c.name}</p>
+                <p className="text-xs text-muted-foreground">Orden: {c.order}</p>
+              </div>
               <div className="flex items-center gap-2">
+                <form
+                  action={setCategoryOrderAction.bind(null, restaurantId, c.id)}
+                  className="hidden items-end gap-2 sm:flex"
+                >
+                  <div className="space-y-1">
+                    <Label htmlFor={`order-${c.id}`} className="text-xs">
+                      Orden
+                    </Label>
+                    <Input
+                      id={`order-${c.id}`}
+                      name="order"
+                      type="number"
+                      defaultValue={c.order}
+                      className="h-9 w-[90px]"
+                    />
+                  </div>
+                  <Button type="submit" variant="outline" size="sm">
+                    Guardar
+                  </Button>
+                </form>
+
                 <Button asChild variant="outline" size="sm">
                   <Link
                     href={`/admin/restaurants/${restaurantId}/categories/${c.id}/edit`}

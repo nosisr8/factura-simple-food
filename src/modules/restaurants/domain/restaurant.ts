@@ -5,6 +5,7 @@ export type Restaurant = {
   description: string;
   avatarImageUrl: string;
   coverImageUrl: string;
+  catalogOnly: boolean;
   whatsappNumber: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -16,6 +17,7 @@ export type CreateRestaurantInput = {
   description: string;
   avatarImageUrl: string;
   coverImageUrl: string;
+  catalogOnly?: boolean;
   whatsappNumber?: string | null;
 };
 

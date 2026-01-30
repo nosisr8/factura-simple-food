@@ -8,6 +8,7 @@ function toDomain(c: PrismaMenuCategory): Category {
   return {
     id: c.id,
     name: c.name,
+    order: c.order,
     restaurantId: c.restaurantId,
     createdAt: c.createdAt,
     updatedAt: c.updatedAt,
@@ -23,7 +24,7 @@ export function prismaCategoryRepository(): CategoryRepository {
           restaurantId,
           ...(q ? { name: { contains: q, mode: "insensitive" } } : {}),
         },
-        orderBy: { createdAt: "desc" },
+        orderBy: [{ order: "asc" }, { createdAt: "asc" }],
       });
       return rows.map(toDomain);
     },
@@ -33,14 +34,17 @@ export function prismaCategoryRepository(): CategoryRepository {
     },
     async create(input) {
       const row = await db.menuCategory.create({
-        data: { name: input.name, restaurantId: input.restaurantId },
+        data: { name: input.name, order: input.order ?? 0, restaurantId: input.restaurantId },
       });
       return toDomain(row);
     },
     async update(id, input) {
       const row = await db.menuCategory.update({
         where: { id },
-        data: { ...(input.name !== undefined ? { name: input.name } : {}) },
+        data: {
+          ...(input.name !== undefined ? { name: input.name } : {}),
+          ...(input.order !== undefined ? { order: input.order } : {}),
+        },
       });
       return toDomain(row);
     },
