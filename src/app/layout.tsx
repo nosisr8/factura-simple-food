@@ -14,8 +14,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "FSW Donalds",
-  description: "¡Vamos a terminar este proyecto!",
+  title: "Factura Simple Food",
+  description: "Catálogo y pedidos para restaurantes.",
 };
 
 export default function RootLayout({

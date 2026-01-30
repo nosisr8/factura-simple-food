@@ -28,24 +28,21 @@ const ProductHeader = ({ product, catalogOnly }: ProductHeaderProps) => {
         <ChevronLeftIcon />
       </Button>
 
-      <Zoom
-        a11yNameButtonZoom="Ampliar imagen"
-        a11yNameButtonUnzoom="Cerrar imagen"
-        zoomMargin={24}
-      >
-        <div
-          role="img"
-          aria-label={product.name}
-          className="absolute inset-0 cursor-zoom-in"
-          style={{
-            backgroundImage: `url(${product.imageUrl})`,
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-          }}
-        />
-      </Zoom>
-      <div className="absolute inset-0 bg-gradient-to-b from-black/35 via-black/10 to-background" />
+      <div className="absolute inset-0 z-0">
+        <Zoom
+          a11yNameButtonZoom="Ampliar imagen"
+          a11yNameButtonUnzoom="Cerrar imagen"
+          zoomMargin={24}
+        >
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="h-full w-full cursor-zoom-in object-cover"
+            loading="eager"
+          />
+        </Zoom>
+      </div>
+      <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-black/35 via-black/10 to-background" />
 
       {!catalogOnly ? (
         <Button
@@ -58,7 +55,7 @@ const ProductHeader = ({ product, catalogOnly }: ProductHeaderProps) => {
         </Button>
       ) : null}
 
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 px-5 pb-4">
         <h1 className="text-xl font-semibold text-white drop-shadow-sm">{product.name}</h1>
       </div>
     </div>
