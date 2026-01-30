@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@prisma/client";
+import type { Product } from "@prisma/client";
 import { createContext, ReactNode, useState } from "react";
 
 export interface CartProduct

@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { ClockIcon } from "lucide-react";
 import Image from "next/image";
 import { useContext, useState } from "react";

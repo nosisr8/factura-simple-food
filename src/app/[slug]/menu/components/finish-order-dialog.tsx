@@ -1,7 +1,6 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ConsumptionMethod } from "@prisma/client";
 import { Loader2Icon } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useContext, useState } from "react";
@@ -71,6 +70,7 @@ const validatedFormSchema = formSchema.superRefine((data, ctx) => {
 });
 
 type FormSchema = z.infer<typeof formSchema>;
+type ConsumptionMethod = "DINE_IN" | "TAKEAWAY";
 
 interface FinishOrderDialogProps {
   open: boolean;

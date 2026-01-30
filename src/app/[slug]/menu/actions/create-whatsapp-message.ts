@@ -73,7 +73,7 @@ export const createWhatsappMessage = async ({
     "",
     `Total: ${formatCurrency(order.total)}`,
     "",
-    //`Confirmar pedido: ${confirmUrl}`,
+    `Confirmar pedido: ${confirmUrl}`,
   ].join("\n");
 
   // Link universal (sirve para abrir WhatsApp Web/App con el texto)

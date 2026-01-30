@@ -1,4 +1,3 @@
-import { ConsumptionMethod } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,6 +11,8 @@ interface ConsumptionMethodOptionProps {
   buttonText: string;
   option: ConsumptionMethod;
 }
+
+type ConsumptionMethod = "DINE_IN" | "TAKEAWAY";
 
 const ConsumptionMethodOption = ({
   slug,

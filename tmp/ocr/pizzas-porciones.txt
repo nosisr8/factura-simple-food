@@ -1,0 +1,59 @@
+# pizzas-porciones
+# best_rotation=90 score=1583
+
+ma — —— |
+; N —. du
+ZN -
+| So 717775 Mi E
+1 s , . PORCIÓN NORMAL
+Y esos Cog PORCIÓN MEDIANA ;
+: Mozzarella 35.000 Gs. í
+e Queso mozzarella, salsa y orégano 20.000 Gs. 1
+y Peperoni 45.0006s. E
+: y Queso mozzarella, salsa, orégano y peperoni 28.000 Gs. al
+y Huevo 45.000 Gs. DN,
+ñ Queso mozzarella, salsa, tomate en cut 0, huevo, orégano (pesto a elección) ma ¿ 4
+> 5 45.000 Gs. $
+i Napolitana y H
+A y Queso mozzarella, salsa, orégano, tomate, jamón y queso 28.000 Gs. f
+| Palmito e
+| Queso mozarella, salsa, orégano, palmito y queso katupiry E. Y
+| Choclo 45-001 Gs. Y
+y " Queso mozarella, salsa, orégano, cho :lo y queso katupiry 28.000€s. | a
+L UTA L
+'y Jamón y Queso 45.010 Gs
+! ] Queso mozzarella, salsa, orégano y jmón 28.000 5 ] u
+p Doble Mozzarella 45.000 € !
+a Y Doble queso mozzarella, salsa y orégano 28.000 Gs. | 4
+Lt ” Cuatro Quesos 55.00 Lis. ;
+E Queso mozzarella, cheddar, katupiry, cuartirolo, salsa y orégano 32.000 Gs |
+LA G y
+Pollo con Katupiry 48.000 Gs.
+! Li r Queso mozzarella, salsa, orégano, pollo, queso katupiry 28.00N 3. N
+E ,
+4 Atún 50.20 Gs. "
+Queso mozzarella, salsa, atún, cebolla caramelizada y orégano 28.000 Gs. :
+« Pa Carmnivoro 55.000 Gs. L
+Ay Queso mozzarella, salsa, orégano, carne salteada, queso katupiry, cebolla y panceta 32.000 Cs. d
+E e
+7 Antojos de Tío “s 60.000 Gs. $
+” Salsa de la casa, lomito, champiñones, queso katupiry 35.000 Gs.
+>
+7 Mexicana , 48.000 Gs. l y
+” Queso mozzarella, salsa, orégano, locote rojo y verde, cebolla morada, 30.000 Gs. A
+came de lomito, picante de la casa y jalapeno
+L Maliana : 48.000 Gs. Io
+Queso mozzarella, salsa, orégano, locote rojo, verde, tomate y pesto 28.000 Gs,
+- Alemana , 48.000 Gs.
+; Queso mozarella, salsa, orégano, panceta, pesto y cebolla caramelizada 28.000 Gs. -
+Vegetariana 48.000 Gs.
+Queso mozzarella, salsa, orégano, huevo duro, locote verde, tomate, choclo y pesto 28.000 Gs.
+La Ahumada 50.000 Gs N
+j Chorizo Napolitano, panceta, cebollas, queso mozzarella, salsa y orégano 30.000 Gs. ;
+K Lomi Pizza . A
+E Came de lomito, queso, Jamón, huevo y salsa CIO
+Burger Pizza . ,
+Carne de Hamburguesa, queso, jamón, huevo y salsa 58000 00
+TT ————]oOADICIINNAL
+“
+Borde Relleno: 12.000 Gs. Aceituna: 3.000 Gs.

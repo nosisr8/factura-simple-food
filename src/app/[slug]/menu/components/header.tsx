@@ -1,6 +1,6 @@
 "use client";
 
-import { Restaurant } from "@prisma/client";
+import type { Restaurant } from "@prisma/client";
 import { ChevronLeftIcon, ScrollTextIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";

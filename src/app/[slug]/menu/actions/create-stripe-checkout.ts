@@ -1,6 +1,5 @@
 "use server";
 
-import { ConsumptionMethod } from "@prisma/client";
 import { headers } from "next/headers";
 import Stripe from "stripe";
 
@@ -11,6 +10,8 @@ import {
   CustomerDocumentType,
   normalizeDocument,
 } from "../helpers/document";
+
+type ConsumptionMethod = "DINE_IN" | "TAKEAWAY";
 
 interface CreateStripeCheckoutInput {
   products: CartProduct[];
