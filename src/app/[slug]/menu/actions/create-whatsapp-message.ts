@@ -25,10 +25,10 @@ export const createWhatsappMessage = async ({
 }: CreateWhatsappMessageInput) => {
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
-    select: { whatsappNumber: true, name: true },
+    select: { whatsappUrl: true, name: true },
   });
-  if (!restaurant?.whatsappNumber) {
-    throw new Error("Missing restaurant WhatsApp number");
+  if (!restaurant?.whatsappUrl) {
+    throw new Error("Missing restaurant WhatsApp url");
   }
 
   const order = await db.order.findUnique({
@@ -77,12 +77,12 @@ export const createWhatsappMessage = async ({
   ].join("\n");
 
   // Link universal (sirve para abrir WhatsApp Web/App con el texto)
-  const whatsappUrl = `https://wa.me/${restaurant.whatsappNumber}?text=${encodeURIComponent(message)}`;
+  const whatsappUrl = `${restaurant.whatsappUrl}?text=${encodeURIComponent(message)}`;
 
   // Texto/payload base para WhatsApp Business Cloud API (si luego lo integrás)
   const whatsappApiPayload = {
     messaging_product: "whatsapp",
-    to: restaurant.whatsappNumber,
+    to: "",
     type: "text",
     text: { body: message },
   };

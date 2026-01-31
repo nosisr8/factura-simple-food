@@ -13,7 +13,7 @@ function toDomain(r: PrismaRestaurant): Restaurant {
     avatarImageUrl: r.avatarImageUrl,
     coverImageUrl: r.coverImageUrl,
     catalogOnly: r.catalogOnly,
-    whatsappNumber: r.whatsappNumber ?? null,
+    whatsappUrl: r.whatsappUrl ?? null,
     createdAt: r.createdAt,
     updatedAt: r.updatedAt,
   };
@@ -49,7 +49,7 @@ export function prismaRestaurantRepository(): RestaurantRepository {
           avatarImageUrl: input.avatarImageUrl,
           coverImageUrl: input.coverImageUrl,
           catalogOnly: input.catalogOnly ?? false,
-          whatsappNumber: input.whatsappNumber ?? null,
+          whatsappUrl: input.whatsappUrl ?? null,
         },
       });
       return toDomain(row);
@@ -66,7 +66,7 @@ export function prismaRestaurantRepository(): RestaurantRepository {
             : {}),
           ...(input.coverImageUrl !== undefined ? { coverImageUrl: input.coverImageUrl } : {}),
           ...(input.catalogOnly !== undefined ? { catalogOnly: input.catalogOnly } : {}),
-          ...(input.whatsappNumber !== undefined ? { whatsappNumber: input.whatsappNumber } : {}),
+          ...(input.whatsappUrl !== undefined ? { whatsappUrl: input.whatsappUrl } : {}),
         },
       });
       return toDomain(row);

@@ -87,15 +87,15 @@ export function RestaurantForm(props: {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="whatsappNumber">WhatsApp (opcional)</Label>
+            <Label htmlFor="whatsappUrl">WhatsApp (URL, opcional)</Label>
             <Input
-              id="whatsappNumber"
-              name="whatsappNumber"
-              defaultValue={initial?.whatsappNumber ?? ""}
-              placeholder="5959..."
+              id="whatsappUrl"
+              name="whatsappUrl"
+              defaultValue={initial?.whatsappUrl ?? ""}
+              placeholder="https://wa.me/5959..."
             />
-            {fe["whatsappNumber"] ? (
-              <p className="text-xs text-destructive">{fe["whatsappNumber"]}</p>
+            {fe["whatsappUrl"] ? (
+              <p className="text-xs text-destructive">{fe["whatsappUrl"]}</p>
             ) : null}
           </div>
 

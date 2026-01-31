@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { db } from "@/lib/prisma";
+import { computeOpenStatus } from "@/modules/opening-hours/application/open-status";
 
 import RestaurantCategories from "./components/categories";
 import RestaurantHeader from "./components/header";
@@ -23,6 +24,7 @@ const RestaurantMenuPage = async ({
   const restaurant = await db.restaurant.findUnique({
     where: { slug },
     include: {
+      openingHours: { orderBy: { dayOfWeek: "asc" } },
       menuCategories: {
         orderBy: { order: "asc" },
         include: { products: true },
@@ -33,6 +35,11 @@ const RestaurantMenuPage = async ({
     return notFound();
   }
 
+  const openStatus = computeOpenStatus({
+    timeZone: restaurant.timezone ?? "America/Asuncion",
+    hours: restaurant.openingHours,
+  });
+
   // Si el restaurante NO es solo catálogo, requiere método de consumo válido.
   if (!restaurant.catalogOnly) {
     if (!consumptionMethod || !isConsumptionMethodValid(consumptionMethod)) {
@@ -42,7 +49,7 @@ const RestaurantMenuPage = async ({
   return (
     <div>
       <RestaurantHeader restaurant={restaurant} />
-      <RestaurantCategories restaurant={restaurant} />
+      <RestaurantCategories restaurant={restaurant} openStatus={openStatus} />
     </div>
   );
 };

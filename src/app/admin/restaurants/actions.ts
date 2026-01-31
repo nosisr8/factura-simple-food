@@ -31,7 +31,7 @@ export async function createRestaurantAction(
       avatarImageUrl: String(formData.get("avatarImageUrl") ?? ""),
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
       catalogOnly: formData.get("catalogOnly") === "on",
-      whatsappNumber: String(formData.get("whatsappNumber") ?? "") || null,
+      whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
     };
     await createRestaurant(payload);
   } catch (e) {
@@ -57,7 +57,7 @@ export async function updateRestaurantAction(
       avatarImageUrl: String(formData.get("avatarImageUrl") ?? ""),
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
       catalogOnly: formData.get("catalogOnly") === "on",
-      whatsappNumber: String(formData.get("whatsappNumber") ?? "") || null,
+      whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
     };
     await updateRestaurant(restaurantId, payload);
   } catch (e) {

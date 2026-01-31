@@ -78,6 +78,10 @@ export default async function AdminRestaurantsPage(props: {
                   <Link href={`/admin/restaurants/${r.id}/products`}>Productos</Link>
                 </Button>
 
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/admin/restaurants/${r.id}/hours`}>Horarios</Link>
+                </Button>
+
                 <form action={deleteRestaurantAction.bind(null, r.id)}>
                   <Button type="submit" variant="destructive" size="sm">
                     Eliminar

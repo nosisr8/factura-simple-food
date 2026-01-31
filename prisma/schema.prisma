@@ -21,12 +21,32 @@ model Restaurant {
   avatarImageUrl String
   coverImageUrl  String
   catalogOnly    Boolean        @default(false)
-  whatsappNumber String?
+  timezone       String         @default("America/Asuncion")
+  // URL completa (ej: https://wa.me/595981234567)
+  whatsappUrl    String?
+  openingHours   RestaurantOpeningHour[]
   menuCategories MenuCategory[]
   products       Product[]
   orders         Order[]
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
+}
+
+model RestaurantOpeningHour {
+  id           String     @id @default(uuid())
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String
+  // 0=Domingo ... 6=Sábado
+  dayOfWeek    Int
+  isClosed     Boolean    @default(false)
+  // Formato "HH:mm"
+  opensAt      String     @default("09:00")
+  closesAt     String     @default("18:00")
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([restaurantId, dayOfWeek])
+  @@index([restaurantId, dayOfWeek])
 }
 
 model MenuCategory {

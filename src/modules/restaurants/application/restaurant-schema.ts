@@ -13,7 +13,7 @@ export const createRestaurantSchema = z.object({
   avatarImageUrl: z.string().trim().url("El avatar debe ser una URL válida."),
   coverImageUrl: z.string().trim().url("El cover debe ser una URL válida."),
   catalogOnly: z.boolean().optional().default(false),
-  whatsappNumber: z.string().trim().optional().nullable(),
+  whatsappUrl: z.string().trim().url("El WhatsApp debe ser una URL válida.").optional().nullable(),
 });
 
 export const updateRestaurantSchema = createRestaurantSchema.partial();
