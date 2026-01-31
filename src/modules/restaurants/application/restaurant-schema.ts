@@ -14,6 +14,10 @@ export const createRestaurantSchema = z.object({
   coverImageUrl: z.string().trim().url("El cover debe ser una URL válida."),
   catalogOnly: z.boolean().optional().default(false),
   whatsappUrl: z.string().trim().url("El WhatsApp debe ser una URL válida.").optional().nullable(),
+  facebookUrl: z.string().trim().url("Facebook debe ser una URL válida.").optional().nullable(),
+  instagramUrl: z.string().trim().url("Instagram debe ser una URL válida.").optional().nullable(),
+  tiktokUrl: z.string().trim().url("TikTok debe ser una URL válida.").optional().nullable(),
+  locationUrl: z.string().trim().url("Ubicación debe ser una URL válida.").optional().nullable(),
 });
 
 export const updateRestaurantSchema = createRestaurantSchema.partial();

@@ -44,10 +44,10 @@ const RestaurantHeader = ({ restaurant }: RestaurantHeaderProps) => {
         </Button>
       ) : null}
 
-      <div className="absolute bottom-0 left-0 right-0 px-5 pb-4">
+      <div className="absolute bottom-0 left-0 right-0 px-5 pb-10">
         <h1 className="text-xl font-semibold text-white drop-shadow-sm">{restaurant.name}</h1>
         <p className="mt-0.5 text-sm text-white/80">
-          {restaurant.catalogOnly ? "Catálogo" : "Menú & pedidos"}
+          {restaurant.catalogOnly ? "Menú" : "Menú & pedidos"}
         </p>
       </div>
     </div>

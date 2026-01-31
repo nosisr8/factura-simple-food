@@ -32,6 +32,10 @@ export async function createRestaurantAction(
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
       catalogOnly: formData.get("catalogOnly") === "on",
       whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
+      facebookUrl: String(formData.get("facebookUrl") ?? "") || null,
+      instagramUrl: String(formData.get("instagramUrl") ?? "") || null,
+      tiktokUrl: String(formData.get("tiktokUrl") ?? "") || null,
+      locationUrl: String(formData.get("locationUrl") ?? "") || null,
     };
     await createRestaurant(payload);
   } catch (e) {
@@ -58,6 +62,10 @@ export async function updateRestaurantAction(
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
       catalogOnly: formData.get("catalogOnly") === "on",
       whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
+      facebookUrl: String(formData.get("facebookUrl") ?? "") || null,
+      instagramUrl: String(formData.get("instagramUrl") ?? "") || null,
+      tiktokUrl: String(formData.get("tiktokUrl") ?? "") || null,
+      locationUrl: String(formData.get("locationUrl") ?? "") || null,
     };
     await updateRestaurant(restaurantId, payload);
   } catch (e) {

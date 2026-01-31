@@ -2,10 +2,10 @@
 "use client";
 
 import type { Prisma } from "@prisma/client";
-import { ClockIcon, SearchIcon } from "lucide-react";
+import { ClockIcon, FacebookIcon, InstagramIcon, MapPinIcon, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,7 +30,13 @@ interface RestaurantCategoriesProps {
         include: { products: true };
       };
     };
-  }>;
+  }> & {
+    whatsappUrl?: string | null;
+    facebookUrl?: string | null;
+    instagramUrl?: string | null;
+    tiktokUrl?: string | null;
+    locationUrl?: string | null;
+  };
   openStatus: { isOpen: boolean; label: "Abierto" | "Cerrado" };
 }
 
@@ -42,6 +48,7 @@ const RestaurantCategories = ({ restaurant, openStatus }: RestaurantCategoriesPr
   const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedCategoryId = searchParams.get("categoryId");
 
   const [selectedCategory, setSelectedCategory] = useState<MenuCategoriesWithProducts | null>(
     restaurant.menuCategories[0] ?? null
@@ -53,10 +60,24 @@ const RestaurantCategories = ({ restaurant, openStatus }: RestaurantCategoriesPr
   const orderingEnabled = !restaurant.catalogOnly;
   const handleCategoryClick = (category: MenuCategoriesWithProducts) => {
     setSelectedCategory(category);
+
+    // Persistir selección en la URL para volver atrás sin perder estado.
+    const params = new URLSearchParams(searchParams);
+    params.set("categoryId", category.id);
+    router.replace(`/${slug}/menu?${params.toString()}`);
   };
   const getCategoryButtonVariant = (category: MenuCategoriesWithProducts) => {
     return selectedCategory?.id === category.id ? "default" : "secondary";
   };
+
+  // Sincroniza la categoría seleccionada con el querystring (?categoryId=...)
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+    const found = restaurant.menuCategories.find((c) => c.id === selectedCategoryId) ?? null;
+    if (found && found.id !== selectedCategory?.id) {
+      setSelectedCategory(found);
+    }
+  }, [restaurant.menuCategories, selectedCategory?.id, selectedCategoryId]);
 
   const allProducts = useMemo(() => {
     const list: Array<{
@@ -143,6 +164,45 @@ const RestaurantCategories = ({ restaurant, openStatus }: RestaurantCategoriesPr
                     <path d="M19.11 17.29c-.29-.14-1.72-.85-1.99-.95-.27-.1-.47-.14-.67.14-.2.29-.77.95-.95 1.14-.17.2-.35.22-.64.07-.29-.14-1.22-.45-2.33-1.43-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.59.13-.13.29-.35.43-.52.14-.17.2-.29.29-.48.1-.2.05-.36-.02-.5-.07-.14-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.5.07-.77.36-.27.29-1.02 1-1.02 2.43 0 1.43 1.04 2.81 1.19 3.01.14.2 2.05 3.13 4.97 4.39.69.3 1.23.48 1.65.62.69.22 1.32.19 1.81.12.55-.08 1.72-.7 1.96-1.38.24-.67.24-1.24.17-1.38-.07-.14-.27-.22-.56-.36z" />
                     <path d="M16.02 3.2c-7.06 0-12.8 5.74-12.8 12.8 0 2.25.59 4.45 1.71 6.38L3.2 28.8l6.58-1.72c1.86 1.01 3.95 1.54 6.25 1.54h.01c7.06 0 12.8-5.74 12.8-12.8S23.08 3.2 16.02 3.2zm0 23.22h-.01c-2.08 0-4-.56-5.67-1.61l-.41-.25-3.9 1.02 1.04-3.8-.27-.39a10.63 10.63 0 0 1-1.72-5.77c0-5.88 4.78-10.66 10.66-10.66 5.88 0 10.66 4.78 10.66 10.66 0 5.88-4.78 10.66-10.66 10.66z" />
                   </svg>
+                </a>
+              </Button>
+            ) : null}
+
+            {restaurant.facebookUrl ? (
+              <Button asChild variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                <a href={restaurant.facebookUrl} target="_blank" rel="noreferrer" aria-label="Facebook">
+                  <FacebookIcon className="h-4 w-4" />
+                </a>
+              </Button>
+            ) : null}
+
+            {restaurant.instagramUrl ? (
+              <Button asChild variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                <a
+                  href={restaurant.instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram"
+                >
+                  <InstagramIcon className="h-4 w-4" />
+                </a>
+              </Button>
+            ) : null}
+
+            {restaurant.tiktokUrl ? (
+              <Button asChild variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                <a href={restaurant.tiktokUrl} target="_blank" rel="noreferrer" aria-label="TikTok">
+                  <svg viewBox="0 0 32 32" className="h-4 w-4" fill="currentColor" aria-hidden="true">
+                    <path d="M23.6 7.7c-1.4-1-2.3-2.6-2.5-4.4h-3.6v17.2c0 1.6-1.3 2.9-2.9 2.9s-2.9-1.3-2.9-2.9 1.3-2.9 2.9-2.9c.3 0 .7.1 1 .2v-3.7c-.3-.1-.7-.1-1-.1-3.6 0-6.5 2.9-6.5 6.5s2.9 6.5 6.5 6.5 6.5-2.9 6.5-6.5V13.2c1.5 1.1 3.3 1.7 5.2 1.7V11c-1.5 0-2.9-.5-3.8-1.3z" />
+                  </svg>
+                </a>
+              </Button>
+            ) : null}
+
+            {restaurant.locationUrl ? (
+              <Button asChild variant="outline" size="icon" className="h-8 w-8 rounded-full">
+                <a href={restaurant.locationUrl} target="_blank" rel="noreferrer" aria-label="Ubicación">
+                  <MapPinIcon className="h-4 w-4" />
                 </a>
               </Button>
             ) : null}

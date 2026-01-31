@@ -99,6 +99,60 @@ export function RestaurantForm(props: {
             ) : null}
           </div>
 
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="space-y-2">
+              <Label htmlFor="facebookUrl">Facebook (URL, opcional)</Label>
+              <Input
+                id="facebookUrl"
+                name="facebookUrl"
+                defaultValue={initial?.facebookUrl ?? ""}
+                placeholder="https://facebook.com/..."
+              />
+              {fe["facebookUrl"] ? (
+                <p className="text-xs text-destructive">{fe["facebookUrl"]}</p>
+              ) : null}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="instagramUrl">Instagram (URL, opcional)</Label>
+              <Input
+                id="instagramUrl"
+                name="instagramUrl"
+                defaultValue={initial?.instagramUrl ?? ""}
+                placeholder="https://instagram.com/..."
+              />
+              {fe["instagramUrl"] ? (
+                <p className="text-xs text-destructive">{fe["instagramUrl"]}</p>
+              ) : null}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="tiktokUrl">TikTok (URL, opcional)</Label>
+              <Input
+                id="tiktokUrl"
+                name="tiktokUrl"
+                defaultValue={initial?.tiktokUrl ?? ""}
+                placeholder="https://tiktok.com/@..."
+              />
+              {fe["tiktokUrl"] ? (
+                <p className="text-xs text-destructive">{fe["tiktokUrl"]}</p>
+              ) : null}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="locationUrl">Ubicación (URL, opcional)</Label>
+              <Input
+                id="locationUrl"
+                name="locationUrl"
+                defaultValue={initial?.locationUrl ?? ""}
+                placeholder="https://maps.google.com/..."
+              />
+              {fe["locationUrl"] ? (
+                <p className="text-xs text-destructive">{fe["locationUrl"]}</p>
+              ) : null}
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label>Modo</Label>
             <label className="flex items-center gap-2 text-sm">

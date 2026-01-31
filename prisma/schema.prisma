@@ -24,6 +24,10 @@ model Restaurant {
   timezone       String         @default("America/Asuncion")
   // URL completa (ej: https://wa.me/595981234567)
   whatsappUrl    String?
+  facebookUrl    String?
+  instagramUrl   String?
+  tiktokUrl      String?
+  locationUrl    String?
   openingHours   RestaurantOpeningHour[]
   menuCategories MenuCategory[]
   products       Product[]

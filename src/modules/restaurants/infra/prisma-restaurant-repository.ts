@@ -14,6 +14,10 @@ function toDomain(r: PrismaRestaurant): Restaurant {
     coverImageUrl: r.coverImageUrl,
     catalogOnly: r.catalogOnly,
     whatsappUrl: r.whatsappUrl ?? null,
+    facebookUrl: r.facebookUrl ?? null,
+    instagramUrl: r.instagramUrl ?? null,
+    tiktokUrl: r.tiktokUrl ?? null,
+    locationUrl: r.locationUrl ?? null,
     createdAt: r.createdAt,
     updatedAt: r.updatedAt,
   };
@@ -50,6 +54,10 @@ export function prismaRestaurantRepository(): RestaurantRepository {
           coverImageUrl: input.coverImageUrl,
           catalogOnly: input.catalogOnly ?? false,
           whatsappUrl: input.whatsappUrl ?? null,
+          facebookUrl: input.facebookUrl ?? null,
+          instagramUrl: input.instagramUrl ?? null,
+          tiktokUrl: input.tiktokUrl ?? null,
+          locationUrl: input.locationUrl ?? null,
         },
       });
       return toDomain(row);
@@ -67,6 +75,10 @@ export function prismaRestaurantRepository(): RestaurantRepository {
           ...(input.coverImageUrl !== undefined ? { coverImageUrl: input.coverImageUrl } : {}),
           ...(input.catalogOnly !== undefined ? { catalogOnly: input.catalogOnly } : {}),
           ...(input.whatsappUrl !== undefined ? { whatsappUrl: input.whatsappUrl } : {}),
+          ...(input.facebookUrl !== undefined ? { facebookUrl: input.facebookUrl } : {}),
+          ...(input.instagramUrl !== undefined ? { instagramUrl: input.instagramUrl } : {}),
+          ...(input.tiktokUrl !== undefined ? { tiktokUrl: input.tiktokUrl } : {}),
+          ...(input.locationUrl !== undefined ? { locationUrl: input.locationUrl } : {}),
         },
       });
       return toDomain(row);
