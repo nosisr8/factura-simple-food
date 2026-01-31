@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { listOpeningHoursByRestaurant } from "@/modules/opening-hours/application/list-opening-hours-by-restaurant";
-import { getRestaurantById } from "@/modules/restaurants/application/get-restaurant-by-id";
 
 import { saveOpeningHoursWeekAction } from "./actions";
 
@@ -24,8 +24,8 @@ export default async function RestaurantHoursPage(props: {
   params: Promise<{ restaurantId: string }>;
 }) {
   const { restaurantId } = await props.params;
-  const restaurant = await getRestaurantById(restaurantId);
-  if (!restaurant) notFound();
+  await requirePermission("restaurant:update");
+  const { restaurant } = await requireRestaurantIdMatch(restaurantId);
 
   const existing = await listOpeningHoursByRestaurant(restaurantId);
   const byDay = new Map(existing.map((h) => [h.dayOfWeek, h]));

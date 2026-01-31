@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { upsertOpeningHoursWeek } from "@/modules/opening-hours/application/upsert-opening-hours-week";
 
 export async function saveOpeningHoursWeekAction(
@@ -9,6 +10,9 @@ export async function saveOpeningHoursWeekAction(
   formData: FormData
 ): Promise<void> {
   try {
+    await requirePermission("restaurant:update");
+    await requireRestaurantIdMatch(restaurantId);
+
     const week = Array.from({ length: 7 }).map((_, dayOfWeek) => {
       const prefix = `d${dayOfWeek}`;
       return {

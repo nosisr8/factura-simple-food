@@ -1,8 +1,9 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 
+import { getAdminContext, requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { createRestaurant } from "@/modules/restaurants/application/create-restaurant";
 import { deleteRestaurant } from "@/modules/restaurants/application/delete-restaurant";
 import { updateRestaurant } from "@/modules/restaurants/application/update-restaurant";
@@ -24,6 +25,11 @@ export async function createRestaurantAction(
   formData: FormData
 ): Promise<RestaurantFormState> {
   try {
+    await requirePermission("restaurant:create");
+    const ctx = await getAdminContext();
+    // Un admin "scoped" por restaurant_slug no puede crear restaurantes.
+    if (ctx.restaurantSlug) notFound();
+
     const payload = {
       name: String(formData.get("name") ?? ""),
       slug: String(formData.get("slug") ?? ""),
@@ -54,6 +60,9 @@ export async function updateRestaurantAction(
   formData: FormData
 ): Promise<RestaurantFormState> {
   try {
+    await requirePermission("restaurant:update");
+    await requireRestaurantIdMatch(restaurantId);
+
     const payload = {
       name: String(formData.get("name") ?? ""),
       slug: String(formData.get("slug") ?? ""),
@@ -79,6 +88,8 @@ export async function updateRestaurantAction(
 }
 
 export async function deleteRestaurantAction(restaurantId: string) {
+  await requirePermission("restaurant:delete");
+  await requireRestaurantIdMatch(restaurantId);
   await deleteRestaurant(restaurantId);
   redirect("/admin/restaurants");
 }

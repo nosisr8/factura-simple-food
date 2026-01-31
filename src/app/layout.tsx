@@ -1,6 +1,7 @@
 import "./globals.css";
 import "react-medium-image-zoom/dist/styles.css";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 
@@ -24,12 +25,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es-PY">
-      <body className={`${poppins.className} antialiased`}>
-        <CartProvider>{children}</CartProvider>
+    <ClerkProvider>
+      <html lang="es-PY">
+        <body className={`${poppins.className} antialiased`}>
+          <CartProvider>{children}</CartProvider>
 
-        <Toaster />
-      </body>
-    </html>
+          <Toaster />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

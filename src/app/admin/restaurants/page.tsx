@@ -5,7 +5,7 @@ import { AdminSearch } from "@/components/molecules/admin-search";
 import { PageHeader } from "@/components/organisms/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { listRestaurants } from "@/modules/restaurants/application/list-restaurants";
+import { getRestaurantFromMetadataOrNull, requirePermission } from "@/modules/admin/rbac";
 
 import { deleteRestaurantAction } from "./actions";
 
@@ -15,7 +15,34 @@ export default async function AdminRestaurantsPage(props: {
   const sp = await props.searchParams;
   const q = (sp?.q ?? "").trim();
 
-  const restaurants = await listRestaurants(q || undefined);
+  const [assignment, ctx] = await Promise.all([
+    getRestaurantFromMetadataOrNull(),
+    requirePermission("restaurant:read"),
+  ]);
+
+  if (!assignment.restaurant) {
+    return (
+      <div className="space-y-6">
+        <PageHeader
+          title="Restaurantes"
+          description="Falta asignar un restaurante para administrar."
+        />
+        <Card>
+          <CardContent className="p-6 text-sm text-muted-foreground">
+            Tu usuario no esta configurado. Contacta con el administrador.
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  const restaurant = assignment.restaurant;
+
+  const restaurants = [restaurant].filter((r) => {
+    if (!q) return true;
+    const query = q.toLowerCase();
+    return r.name.toLowerCase().includes(query) || r.slug.toLowerCase().includes(query);
+  });
 
   return (
     <div className="space-y-6">
@@ -29,9 +56,11 @@ export default async function AdminRestaurantsPage(props: {
               q={q}
               placeholder="Buscar por nombre o slug..."
             />
-            <Button asChild>
-              <Link href="/admin/restaurants/new">Nuevo</Link>
-            </Button>
+            {ctx.permissions.has("restaurant:create") ? (
+              <Button asChild>
+                <Link href="/admin/restaurants/new">Nuevo</Link>
+              </Button>
+            ) : null}
           </div>
         }
       />
@@ -66,27 +95,37 @@ export default async function AdminRestaurantsPage(props: {
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/restaurants/${r.id}/edit`}>Editar</Link>
-                </Button>
-
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/restaurants/${r.id}/categories`}>Categorías</Link>
-                </Button>
-
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/restaurants/${r.id}/products`}>Productos</Link>
-                </Button>
-
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/restaurants/${r.id}/hours`}>Horarios</Link>
-                </Button>
-
-                <form action={deleteRestaurantAction.bind(null, r.id)}>
-                  <Button type="submit" variant="destructive" size="sm">
-                    Eliminar
+                {ctx.permissions.has("restaurant:update") ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/admin/restaurants/${r.id}/edit`}>Editar</Link>
                   </Button>
-                </form>
+                ) : null}
+
+                {ctx.permissions.has("category:read") ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/admin/restaurants/${r.id}/categories`}>Categorías</Link>
+                  </Button>
+                ) : null}
+
+                {ctx.permissions.has("product:read") ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/admin/restaurants/${r.id}/products`}>Productos</Link>
+                  </Button>
+                ) : null}
+
+                {ctx.permissions.has("restaurant:update") ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/admin/restaurants/${r.id}/hours`}>Horarios</Link>
+                  </Button>
+                ) : null}
+
+                {ctx.permissions.has("restaurant:delete") ? (
+                  <form action={deleteRestaurantAction.bind(null, r.id)}>
+                    <Button type="submit" variant="destructive" size="sm">
+                      Eliminar
+                    </Button>
+                  </form>
+                ) : null}
               </div>
             </CardContent>
           </Card>

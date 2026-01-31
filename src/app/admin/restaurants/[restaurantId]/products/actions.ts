@@ -1,10 +1,12 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { createProduct } from "@/modules/products/application/create-product";
 import { deleteProduct } from "@/modules/products/application/delete-product";
+import { getProductById } from "@/modules/products/application/get-product-by-id";
 import { updateProduct } from "@/modules/products/application/update-product";
 
 type FieldErrors = Record<string, string | undefined>;
@@ -32,6 +34,9 @@ export async function createProductAction(
   formData: FormData
 ): Promise<ProductFormState> {
   try {
+    await requirePermission("product:create");
+    await requireRestaurantIdMatch(restaurantId);
+
     const payload = {
       restaurantId,
       menuCategoryId: String(formData.get("menuCategoryId") ?? ""),
@@ -59,6 +64,11 @@ export async function updateProductAction(
   formData: FormData
 ): Promise<ProductFormState> {
   try {
+    await requirePermission("product:update");
+    await requireRestaurantIdMatch(restaurantId);
+    const existing = await getProductById(productId);
+    if (!existing || existing.restaurantId !== restaurantId) notFound();
+
     const payload = {
       restaurantId,
       menuCategoryId: String(formData.get("menuCategoryId") ?? ""),
@@ -80,6 +90,11 @@ export async function updateProductAction(
 }
 
 export async function deleteProductAction(restaurantId: string, productId: string) {
+  await requirePermission("product:delete");
+  await requireRestaurantIdMatch(restaurantId);
+  const existing = await getProductById(productId);
+  if (!existing || existing.restaurantId !== restaurantId) notFound();
+
   await deleteProduct(productId);
   redirect(`/admin/restaurants/${restaurantId}/products`);
 }

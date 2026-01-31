@@ -7,9 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { formatCurrency } from "@/helpers/format-currency";
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { listCategoriesByRestaurant } from "@/modules/categories/application/list-categories-by-restaurant";
 import { listProductsByRestaurant } from "@/modules/products/application/list-products-by-restaurant";
-import { getRestaurantById } from "@/modules/restaurants/application/get-restaurant-by-id";
 
 import { deleteProductAction } from "./actions";
 
@@ -22,16 +22,8 @@ export default async function ProductsPage(props: {
   const q = (sp?.q ?? "").trim();
   const categoryId = (sp?.categoryId ?? "").trim();
 
-  const restaurant = await getRestaurantById(restaurantId);
-  if (!restaurant) {
-    return (
-      <Card>
-        <CardContent className="p-6 text-sm text-muted-foreground">
-          Restaurante no encontrado.
-        </CardContent>
-      </Card>
-    );
-  }
+  await requirePermission("product:read");
+  const { ctx, restaurant } = await requireRestaurantIdMatch(restaurantId);
 
   const [categories, products] = await Promise.all([
     listCategoriesByRestaurant(restaurantId),
@@ -92,9 +84,11 @@ export default async function ProductsPage(props: {
                 </Button>
               ) : null}
             </form>
-            <Button asChild>
-              <Link href={`/admin/restaurants/${restaurantId}/products/new`}>Nuevo</Link>
-            </Button>
+            {ctx.permissions.has("product:create") ? (
+              <Button asChild>
+                <Link href={`/admin/restaurants/${restaurantId}/products/new`}>Nuevo</Link>
+              </Button>
+            ) : null}
           </div>
         }
       />
@@ -131,16 +125,20 @@ export default async function ProductsPage(props: {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/restaurants/${restaurantId}/products/${p.id}/edit`}>
-                    Editar
-                  </Link>
-                </Button>
-                <form action={deleteProductAction.bind(null, restaurantId, p.id)}>
-                  <Button type="submit" variant="destructive" size="sm">
-                    Eliminar
+                {ctx.permissions.has("product:update") ? (
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/admin/restaurants/${restaurantId}/products/${p.id}/edit`}>
+                      Editar
+                    </Link>
                   </Button>
-                </form>
+                ) : null}
+                {ctx.permissions.has("product:delete") ? (
+                  <form action={deleteProductAction.bind(null, restaurantId, p.id)}>
+                    <Button type="submit" variant="destructive" size="sm">
+                      Eliminar
+                    </Button>
+                  </form>
+                ) : null}
               </div>
             </CardContent>
           </Card>

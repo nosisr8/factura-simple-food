@@ -1,10 +1,12 @@
 "use server";
 
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { z } from "zod";
 
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 import { createCategory } from "@/modules/categories/application/create-category";
 import { deleteCategory } from "@/modules/categories/application/delete-category";
+import { getCategoryById } from "@/modules/categories/application/get-category-by-id";
 import { updateCategory } from "@/modules/categories/application/update-category";
 
 type FieldErrors = Record<string, string | undefined>;
@@ -25,6 +27,9 @@ export async function createCategoryAction(
   formData: FormData
 ): Promise<CategoryFormState> {
   try {
+    await requirePermission("category:create");
+    await requireRestaurantIdMatch(restaurantId);
+
     const payload = {
       restaurantId,
       name: String(formData.get("name") ?? ""),
@@ -48,6 +53,11 @@ export async function updateCategoryAction(
   formData: FormData
 ): Promise<CategoryFormState> {
   try {
+    await requirePermission("category:update");
+    await requireRestaurantIdMatch(restaurantId);
+    const existing = await getCategoryById(categoryId);
+    if (!existing || existing.restaurantId !== restaurantId) notFound();
+
     const payload = {
       name: String(formData.get("name") ?? ""),
       order: String(formData.get("order") ?? ""),
@@ -64,6 +74,11 @@ export async function updateCategoryAction(
 }
 
 export async function deleteCategoryAction(restaurantId: string, categoryId: string) {
+  await requirePermission("category:delete");
+  await requireRestaurantIdMatch(restaurantId);
+  const existing = await getCategoryById(categoryId);
+  if (!existing || existing.restaurantId !== restaurantId) notFound();
+
   await deleteCategory(categoryId);
   redirect(`/admin/restaurants/${restaurantId}/categories`);
 }
@@ -73,6 +88,11 @@ export async function setCategoryOrderAction(
   categoryId: string,
   formData: FormData
 ) {
+  await requirePermission("category:update");
+  await requireRestaurantIdMatch(restaurantId);
+  const existing = await getCategoryById(categoryId);
+  if (!existing || existing.restaurantId !== restaurantId) notFound();
+
   await updateCategory(categoryId, { order: String(formData.get("order") ?? "") });
   redirect(`/admin/restaurants/${restaurantId}/categories`);
 }

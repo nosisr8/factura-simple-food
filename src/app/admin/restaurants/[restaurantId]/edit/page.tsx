@@ -1,7 +1,5 @@
-import { notFound } from "next/navigation";
-
 import { PageHeader } from "@/components/organisms/page-header";
-import { getRestaurantById } from "@/modules/restaurants/application/get-restaurant-by-id";
+import { requirePermission, requireRestaurantIdMatch } from "@/modules/admin/rbac";
 
 import { RestaurantForm } from "../../restaurant-form";
 
@@ -9,8 +7,8 @@ export default async function EditRestaurantPage(props: {
   params: Promise<{ restaurantId: string }>;
 }) {
   const { restaurantId } = await props.params;
-  const restaurant = await getRestaurantById(restaurantId);
-  if (!restaurant) notFound();
+  await requirePermission("restaurant:update");
+  const { restaurant } = await requireRestaurantIdMatch(restaurantId);
 
   return (
     <div className="space-y-6">

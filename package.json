@@ -13,9 +13,14 @@
     "seed": "ts-node ./prisma/seed.ts"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["@prisma/client", "@prisma/engines", "prisma"]
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ]
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.37.1",
     "@hookform/resolvers": "^5.2.2",
     "@prisma/client": "^6.9.0",
     "@radix-ui/react-dialog": "^1.1.15",

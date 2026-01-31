@@ -1,15 +1,8 @@
 import Link from "next/link";
 
-import { logoutAdmin } from "@/app/admin/actions";
-import { Button } from "@/components/ui/button";
-import { isAdminAuthed } from "@/modules/admin/session";
+import { AdminUserButton } from "@/app/admin/components/admin-user-button";
 
 export default async function AdminLayout(props: { children: React.ReactNode }) {
-  // Defensa en profundidad: middleware ya protege, pero esto evita flashes raros.
-  if (!(await isAdminAuthed())) {
-    // Evitamos redirect aquí para no duplicar con middleware; el middleware ya redirige.
-  }
-
   return (
     <div className="min-h-screen">
       <header className="border-b">
@@ -25,11 +18,7 @@ export default async function AdminLayout(props: { children: React.ReactNode }) 
             </nav>
           </div>
 
-          <form action={logoutAdmin}>
-            <Button type="submit" variant="outline" size="sm">
-              Salir
-            </Button>
-          </form>
+          <AdminUserButton />
         </div>
       </header>
 
