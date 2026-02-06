@@ -176,7 +176,7 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
           />
         </div>
 
-        <div className="mt-[180px] rounded-3xl border bg-background/90 p-5 shadow-lg backdrop-blur">
+        <div className="mt-[100px] rounded-3xl border bg-background/90 p-5 shadow-lg backdrop-blur">
           <h2 className="text-xl font-semibold">¿Qué querés hacer?</h2>
           <p className="mt-1 text-sm text-muted-foreground">
             {restaurant.catalogOnly
