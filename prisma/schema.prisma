@@ -20,6 +20,9 @@ model Restaurant {
   description    String
   avatarImageUrl String
   coverImageUrl  String
+  // Stories tipo Instagram (imágenes promocionales)
+  storyIsActive  Boolean        @default(false)
+  storyImageUrls String[]       @default([])
   catalogOnly    Boolean        @default(false)
   timezone       String         @default("America/Asuncion")
   // URL completa (ej: https://wa.me/595981234567)

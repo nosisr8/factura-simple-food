@@ -5,6 +5,8 @@ export type Restaurant = {
   description: string;
   avatarImageUrl: string;
   coverImageUrl: string;
+  storyIsActive: boolean;
+  storyImageUrls: string[];
   catalogOnly: boolean;
   whatsappUrl: string | null;
   facebookUrl: string | null;
@@ -21,6 +23,8 @@ export type CreateRestaurantInput = {
   description: string;
   avatarImageUrl: string;
   coverImageUrl: string;
+  storyIsActive?: boolean;
+  storyImageUrls?: string[];
   catalogOnly?: boolean;
   whatsappUrl?: string | null;
   facebookUrl?: string | null;

@@ -6,6 +6,7 @@ import { db } from "@/lib/prisma";
 import { Button } from "@/components/ui/button";
 
 import ConsumptionMethodOption from "./components/consumption-method-option";
+import { RestaurantStories } from "./components/stories";
 
 interface RestaurantPageProps {
   params: Promise<{ slug: string }>;
@@ -18,6 +19,8 @@ type RestaurantWithSocialLinks = {
   description: string;
   avatarImageUrl: string;
   coverImageUrl: string;
+  storyIsActive: boolean;
+  storyImageUrls: string[];
   catalogOnly: boolean;
   timezone: string;
   whatsappUrl: string | null;
@@ -160,6 +163,17 @@ const RestaurantPage = async ({ params }: RestaurantPageProps) => {
               </div>
             ) : null}
           </div>
+        </div>
+
+        <div className="mt-5">
+          <RestaurantStories
+            restaurantId={restaurant.id}
+            restaurantName={restaurant.name}
+            avatarImageUrl={restaurant.avatarImageUrl}
+            isActive={restaurant.storyIsActive}
+            imageUrls={restaurant.storyImageUrls}
+            durationMs={15_000}
+          />
         </div>
 
         <div className="mt-[180px] rounded-3xl border bg-background/90 p-5 shadow-lg backdrop-blur">

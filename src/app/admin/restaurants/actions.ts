@@ -36,6 +36,16 @@ export async function createRestaurantAction(
       description: String(formData.get("description") ?? ""),
       avatarImageUrl: String(formData.get("avatarImageUrl") ?? ""),
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
+      storyIsActive: formData.get("storyIsActive") === "on",
+      storyImageUrls: (() => {
+        const raw = String(formData.get("storyImageUrls") ?? "[]");
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed.filter((x) => typeof x === "string") : [];
+        } catch {
+          return [];
+        }
+      })(),
       catalogOnly: formData.get("catalogOnly") === "on",
       whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
       facebookUrl: String(formData.get("facebookUrl") ?? "") || null,
@@ -69,6 +79,16 @@ export async function updateRestaurantAction(
       description: String(formData.get("description") ?? ""),
       avatarImageUrl: String(formData.get("avatarImageUrl") ?? ""),
       coverImageUrl: String(formData.get("coverImageUrl") ?? ""),
+      storyIsActive: formData.get("storyIsActive") === "on",
+      storyImageUrls: (() => {
+        const raw = String(formData.get("storyImageUrls") ?? "[]");
+        try {
+          const parsed = JSON.parse(raw);
+          return Array.isArray(parsed) ? parsed.filter((x) => typeof x === "string") : [];
+        } catch {
+          return [];
+        }
+      })(),
       catalogOnly: formData.get("catalogOnly") === "on",
       whatsappUrl: String(formData.get("whatsappUrl") ?? "") || null,
       facebookUrl: String(formData.get("facebookUrl") ?? "") || null,

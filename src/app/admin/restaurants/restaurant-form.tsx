@@ -3,6 +3,7 @@
 import { useActionState, useMemo, useState } from "react";
 
 import { ImageUpload } from "@/components/molecules/image-upload";
+import { ImagesUpload } from "@/components/molecules/images-upload";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,8 @@ export function RestaurantForm(props: {
 
   const [avatarImageUrl, setAvatarImageUrl] = useState<string>(initial?.avatarImageUrl ?? "");
   const [coverImageUrl, setCoverImageUrl] = useState<string>(initial?.coverImageUrl ?? "");
+  const [storyIsActive, setStoryIsActive] = useState<boolean>(initial?.storyIsActive ?? false);
+  const [storyImageUrls, setStoryImageUrls] = useState<string[]>(initial?.storyImageUrls ?? []);
 
   const action = useMemo<
     (prevState: RestaurantFormState, formData: FormData) => Promise<RestaurantFormState>
@@ -43,6 +46,9 @@ export function RestaurantForm(props: {
   );
 
   const fe = state?.fieldErrors ?? {};
+  const storyImagesError =
+    fe["storyImageUrls"] ??
+    Object.entries(fe).find(([k]) => k === "storyImageUrls" || k.startsWith("storyImageUrls."))?.[1];
 
   return (
     <Card>
@@ -171,6 +177,7 @@ export function RestaurantForm(props: {
 
           <input type="hidden" name="avatarImageUrl" value={avatarImageUrl} />
           <input type="hidden" name="coverImageUrl" value={coverImageUrl} />
+          <input type="hidden" name="storyImageUrls" value={JSON.stringify(storyImageUrls)} />
 
           <div className="grid gap-6 md:grid-cols-2">
             <ImageUpload
@@ -191,6 +198,38 @@ export function RestaurantForm(props: {
             />
             {fe["coverImageUrl"] ? (
               <p className="text-xs text-destructive">{fe["coverImageUrl"]}</p>
+            ) : null}
+          </div>
+
+          <div className="space-y-3 rounded-lg border p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-sm font-medium">Estados (tipo Instagram)</p>
+                <p className="text-xs text-muted-foreground">
+                  Se muestran en la página del restaurante y avanzan automáticamente cada 15 segundos.
+                </p>
+              </div>
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  name="storyIsActive"
+                  checked={storyIsActive}
+                  onChange={(e) => setStoryIsActive(e.currentTarget.checked)}
+                  className="h-4 w-4 rounded border border-input"
+                />
+                Activo
+              </label>
+            </div>
+
+            <ImagesUpload
+              label="Imágenes de estados"
+              folder="restaurants/stories"
+              value={storyImageUrls}
+              onChange={setStoryImageUrls}
+              max={20}
+            />
+            {storyImagesError ? (
+              <p className="text-xs text-destructive">{storyImagesError}</p>
             ) : null}
           </div>
         </CardContent>
